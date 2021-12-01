@@ -17,15 +17,12 @@ def handler(message):
         bot.reply_to(
             message=message, text=welcome_text
         )
-
-@bot.message_handler(content_types=['text'])
-def news_handler(message):
-    if message.text.lower == 'новости':
-        bot.send_message()
+    elif message.text.lower() == 'новости':
         source = requests.get(url)
         main_text = source.text
         soup = BeautifulSoup(main_text, "html.parser")
         news = [zs.text for zs in soup.find_all('div', {'class': 'one'})]
-        print(news[:10])
+        bot.send_message(message.chat.id, news[:10])
+
 
 bot.polling()
